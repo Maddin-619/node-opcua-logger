@@ -3,11 +3,17 @@
 let async = require("async");
 let influx = require("influx");
 let nedb = require("nedb");
+let fs = require("fs")
 
 function WritePump(config) {
 	let dbname = config.name + ".db";
 	let dir = process.env.BUFFER_LOCATION || __dirname
 	let path = require('path').resolve(dir, dbname);
+	console.log(path);
+
+	if (fs.existsSync(path)) {
+		fs.unlinkSync(path);
+	}
 	
 	this.name = config.name;
 	this.config = config;

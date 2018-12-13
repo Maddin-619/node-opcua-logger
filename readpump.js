@@ -5,6 +5,8 @@ var opcua = require("node-opcua");
 
 function ReadPump(config, measurements, writepump) {
     this.uaServerUrl = config.url;
+    this.publishingInterval = config.publishingInterval;
+    this.maxNotificationsPerPublish = config.maxNotificationsPerPublish;
     this.uaClient;
     this.uaSession;
     this.uaSubscription;
@@ -98,10 +100,10 @@ ReadPump.prototype.StartMonitoring = function(callback) {
 
     // create an OPCUA subscription
     self.uaSubscription = new opcua.ClientSubscription(self.uaSession, {
-        requestedPublishingInterval: 1000,
-        requestedLifetimeCount: 10,
-        requestedMaxKeepAliveCount: 2,
-        maxNotificationsPerPublish: 20,
+        requestedPublishingInterval: self.publishingInterval,
+        maxNotificationsPerPublish: self.maxNotificationsPerPublish,
+        requestedLifetimeCount: 1000,
+        requestedMaxKeepAliveCount: 300,
         publishingEnabled: true,
         priority: 1
     });

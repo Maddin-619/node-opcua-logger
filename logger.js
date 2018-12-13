@@ -14,7 +14,13 @@ wp.Run();
 let rps = [];
 // get the readpumps
 config.input.forEach(element => {
-	rps.push(new readpump({url: element.url, failoverTimeout: element.failoverTimeout}, element.measurements, wp))
+	rps.push(new readpump(
+		{
+		url: element.url,
+		failoverTimeout: element.failoverTimeout,
+		publishingInterval: element.publishingInterval,
+		maxNotificationsPerPublish: element.maxNotificationsPerPublish,
+		}, element.measurements, wp))
 });
 
 async.each(rps,

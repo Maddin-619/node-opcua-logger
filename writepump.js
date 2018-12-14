@@ -18,8 +18,7 @@ function WritePump(config) {
 	this.name = config.name;
 	this.config = config;
 	this.buffer = new nedb({ 
-		filename: path, 
-		autoload: true 
+		inMemoryOnly: true,
 	});
 	this.output = new influx.InfluxDB({
 		host :           config.host,
@@ -41,31 +40,30 @@ WritePump.prototype.Run = function() {
 	let writeInterval = self.config.writeInterval || 5000;
 	
 	console.log(self.name, ": starting writepump [ writeLimit: ", writeLimit, ", writeInterval:", writeInterval, "].")
+
+	let writepumpStart;
+	let queryFinish;
+	let formatingFinish;
+	let insertFinish;
+	let removeFinish;
 	
 	async.forever(
 		function(forever_next) {
 			async.waterfall([
 				function(waterfall_next) {
+					writepumpStart = Date.now();
 					self.buffer.find({})
 						       .limit(writeLimit)
 					           .exec(waterfall_next);
 				},
 				function(docs, waterfall_next) {
-					//console.log(name, ": found", docs.length, "records in buffer.");
-					let ids = [];
-					let series = [];
-					docs.forEach(function(doc) {
-						ids.push(doc._id);
-						series.push({
-							measurement: doc.s,
-							tags: doc.t,
-							fields: {value: doc.v.value},
-							timestamp: new Date(doc.v.time),
-						});
-					});
-					
-					self.output.writePoints(series, {database : self.config.database})
+					queryFinish = Date.now();
+					console.log(self.name, ": found", docs.length, "records in buffer.");
+					let ids = docs.map( element => element._id)
+					formatingFinish = Date.now();
+					self.output.writePoints(docs, {database : self.config.database})
 					.then(() => {
+						insertFinish = Date.now();
 						waterfall_next(null, ids);
 					})
 					.catch(err => {
@@ -76,6 +74,7 @@ WritePump.prototype.Run = function() {
 					self.buffer.remove({_id: { $in: ids } }, { multi: true	}, waterfall_next)
 				}
 			], function (err, numberProcessed) {
+				removeFinish = Date.now();
 				if (err) {
 					console.log(self.name, err)
 					if (err.toString().search("database not found") != -1) {
@@ -86,10 +85,13 @@ WritePump.prototype.Run = function() {
 				let wait = numberProcessed == writeLimit ? 0 : writeInterval
 				if (wait > 0) {
 					// now is a good time to compact the buffer.
-					self.buffer.persistence.compactDatafile();
+					//self.buffer.persistence.compactDatafile();
 				} else {
 					console.log("Warning: buffer exceeded writeLimit");
 				}
+				let now = Date.now();
+				//console.log(self.name, "start", writepumpStart, "buffer query", queryFinish , "formating", formatingFinish , "insert", insertFinish, "remove", removeFinish, "now", now);
+				console.log(self.name, "total", now - writepumpStart, "buffer query", queryFinish - writepumpStart, "formating", formatingFinish - queryFinish, "insert", insertFinish - formatingFinish, "remove", removeFinish - insertFinish );
 				setTimeout(forever_next, wait);
 			}
 		)},
@@ -111,15 +113,13 @@ WritePump.prototype.AddPointsToBuffer = function(points) {
 	points.forEach(
 		function (p) {
 			let entry = {
-				s: p.measurement.name, 
-				v: {
-					value: p.value,
-					time: p.timestamp
-				}, 
-				t: p.measurement.tags
+				measurement: p.measurement.name, 
+				fields: {value: p.value},
+				timestamp: new Date(p.timestamp),
+				tags: p.measurement.tags
 			};
 			// opc status should also be included in tags.
-			entry.t.opcstatus = p.opcstatus;
+			entry.tags.opcstatus = p.opcstatus;
 			self.buffer.insert(entry, function (err, newDoc) {   
 				if (err) console.log(this.name, "Error writing to buffer. Entry:", entry, ", Err:", err);
 			});

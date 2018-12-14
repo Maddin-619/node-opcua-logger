@@ -47,7 +47,8 @@ async.each(rps,
 );
 
 function loadConfig() {
-	var path = require("path").resolve(__dirname, 'config.toml');
+	//var path = require("path").resolve(__dirname, 'config.toml');
+	var path = require("path").resolve('/var/lib/node-opcua-logger', 'config.toml');
 	var text = require("fs").readFileSync(path, "utf8");
 	return toml.parse(text);
 }

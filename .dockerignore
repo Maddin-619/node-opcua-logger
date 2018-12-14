@@ -1,0 +1,4 @@
+**/node_modules/
+.git
+**/config.toml
+node-opcua-logger.tar

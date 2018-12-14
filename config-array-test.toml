@@ -1,0 +1,30 @@
+[[input]]
+url             = "opc.tcp://172.24.55.161:48050"
+failoverTimeout = 5000 # time to wait before reconnection in case of failure
+
+# A monitored node
+[[input.measurements]]
+name               = "testarray"
+dataType           = "number"
+isArray            = true
+arrayIndex         = 0
+tags               = {}
+nodeId             = "ns=6;s=MAIN.fbRobot1.stCoEEL7041[1].uiParameter"
+collectionType     = "monitored"
+monitorResolution  = 1000    # ms
+deadbandAbsolute   = 0 		# Absolute max difference for a value not to be collected
+deadbandRelative   = 0    	# Relative max difference for a value not to be collected
+
+[output]
+name             = "influx_1"
+type             = "influxdb"
+host             = "127.0.0.1"
+port             = 8086
+protocol         = "http"
+username         = ""
+password         = ""
+database         = "test"
+failoverTimeout  = 10000
+bufferMaxSize    = 64
+writeInterval    = 100
+writeMaxPoints   = 1000

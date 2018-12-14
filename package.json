@@ -5,10 +5,12 @@
 	"private": true,
 	"main": "logger.js",
 	"author": "Jeroen Coussement (@coussej)",
+	"scripts": {
+		"start": "node logger.js"
+	},
 	"dependencies": {
 		"async": "1.5.2",
 		"influx": "5.0.7",
-		"nedb": "1.8.0",
 		"node-opcua": "^0.5.3",
 		"node-schedule": "1.1.0",
 		"toml": "2.3.0"

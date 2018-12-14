@@ -1,78 +1,516 @@
-[[input]]
-url             = "opc.tcp://opcua.demo-this.com:51210/UA/SampleServer"
-failoverTimeout = 5000 # time to wait before reconnection in case of failure
-
-# A polled node:
-[[input.measurements]]
-name               = "Int32polled"
-dataType           = "number"
-tags               = { tag1 = "test", tag2 = "AB43" }
-nodeId             = "ns=2;i=10849"
-collectionType     = "polled"
-pollRate           = 60     # samples / minute.
-deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
-deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
-
-# A monitored node
-[[input.measurements]]
-name               = "Int32monitored"
-dataType           = "number"
-tags               = { tag1 = "test", tag2 = "AB43" }
-nodeId             = "ns=2;i=10849"
-collectionType     = "monitored"
-monitorResolution  = 1000    # ms
-deadbandAbsolute   = 0 		# Absolute max difference for a value not to be collected
-deadbandRelative   = 0    	# Relative max difference for a value not to be collected
-
-# A monitored array node. Log element at arrayIndex
-[[input.measurements]]
-name               = "Uint32Array"
-dataType           = "number"
-isArray            = true
-arrayIndex         = 0
-tags               = { tag1 = "test", tag2 = "AB43" }
-nodeId             = "ns=2;i=10849"
-collectionType     = "monitored"
-monitorResolution  = 1000    # ms
-deadbandAbsolute   = 0 		# Absolute max difference for a value not to be collected
-deadbandRelative   = 0    	# Relative max difference for a value not to be collected
-
-[[input]]
-url             = "opc.tcp://opcua.demo-this.com:51210/UA/SampleServer"
-failoverTimeout = 5000 # time to wait before reconnection in case of failure
-
-# A polled node:
-[[input.measurements]]
-name               = "Int32polled"
-dataType           = "number"
-tags               = { tag1 = "test", tag2 = "AB43" }
-nodeId             = "ns=2;i=10849"
-collectionType     = "polled"
-pollRate           = 60     # samples / minute.
-deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
-deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
-
-# A monitored node
-[[input.measurements]]
-name               = "Int32monitored"
-dataType           = "number"
-tags               = { tag1 = "test", tag2 = "AB43" }
-nodeId             = "ns=2;i=10849"
-collectionType     = "monitored"
-monitorResolution  = 1000    # ms
-deadbandAbsolute   = 0 		# Absolute max difference for a value not to be collected
-deadbandRelative   = 0    	# Relative max difference for a value not to be collected
 
 [output]
 name             = "influx_1"
 type             = "influxdb"
-host             = "128.199.39.148"
+host             = "localhost"
 port             = 8086
 protocol         = "http"
 username         = ""
 password         = ""
 database         = "test"
 failoverTimeout  = 10000
-bufferMaxSize    = 64
-writeInterval    = 3000
-writeMaxPoints   = 1000
+bufferMaxSize    = 1000
+writeInterval    = 1000
+writeMaxPoints   = 10000
+
+
+[[input]]
+url             = "opc.tcp://172.24.55.161:4840"
+failoverTimeout = 5000 # time to wait before reconnection in case of failure
+publishingInterval = 1000 # ms
+maxNotificationsPerPublish = 0
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "1"}
+nodeId             = "ns=4;s=MAIN.rVariable1"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "2"}
+nodeId             = "ns=4;s=MAIN.rVariable2"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "3"}
+nodeId             = "ns=4;s=MAIN.rVariable3"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "4"}
+nodeId             = "ns=4;s=MAIN.rVariable4"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "5"}
+nodeId             = "ns=4;s=MAIN.rVariable5"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "6"}
+nodeId             = "ns=4;s=MAIN.rVariable6"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "7"}
+nodeId             = "ns=4;s=MAIN.rVariable7"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "8"}
+nodeId             = "ns=4;s=MAIN.rVariable8"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "9"}
+nodeId             = "ns=4;s=MAIN.rVariable9"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "10"}
+nodeId             = "ns=4;s=MAIN.rVariable10"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "11"}
+nodeId             = "ns=4;s=MAIN.rVariable11"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "12"}
+nodeId             = "ns=4;s=MAIN.rVariable12"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "13"}
+nodeId             = "ns=4;s=MAIN.rVariable13"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "14"}
+nodeId             = "ns=4;s=MAIN.rVariable14"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "15"}
+nodeId             = "ns=4;s=MAIN.rVariable15"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "16"}
+nodeId             = "ns=4;s=MAIN.rVariable16"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "17"}
+nodeId             = "ns=4;s=MAIN.rVariable17"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "18"}
+nodeId             = "ns=4;s=MAIN.rVariable18"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "19"}
+nodeId             = "ns=4;s=MAIN.rVariable19"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "20"}
+nodeId             = "ns=4;s=MAIN.rVariable20"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "21"}
+nodeId             = "ns=4;s=MAIN.rVariable21"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "22"}
+nodeId             = "ns=4;s=MAIN.rVariable22"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "23"}
+nodeId             = "ns=4;s=MAIN.rVariable23"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "24"}
+nodeId             = "ns=4;s=MAIN.rVariable24"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "25"}
+nodeId             = "ns=4;s=MAIN.rVariable25"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "26"}
+nodeId             = "ns=4;s=MAIN.rVariable26"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "27"}
+nodeId             = "ns=4;s=MAIN.rVariable27"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "28"}
+nodeId             = "ns=4;s=MAIN.rVariable28"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "29"}
+nodeId             = "ns=4;s=MAIN.rVariable29"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "30"}
+nodeId             = "ns=4;s=MAIN.rVariable30"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "31"}
+nodeId             = "ns=4;s=MAIN.rVariable31"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "32"}
+nodeId             = "ns=4;s=MAIN.rVariable32"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "33"}
+nodeId             = "ns=4;s=MAIN.rVariable33"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "34"}
+nodeId             = "ns=4;s=MAIN.rVariable34"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "35"}
+nodeId             = "ns=4;s=MAIN.rVariable35"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "36"}
+nodeId             = "ns=4;s=MAIN.rVariable36"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "37"}
+nodeId             = "ns=4;s=MAIN.rVariable37"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "38"}
+nodeId             = "ns=4;s=MAIN.rVariable38"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "39"}
+nodeId             = "ns=4;s=MAIN.rVariable39"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "40"}
+nodeId             = "ns=4;s=MAIN.rVariable40"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "41"}
+nodeId             = "ns=4;s=MAIN.rVariable41"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "42"}
+nodeId             = "ns=4;s=MAIN.rVariable42"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "43"}
+nodeId             = "ns=4;s=MAIN.rVariable43"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "44"}
+nodeId             = "ns=4;s=MAIN.rVariable44"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected
+
+# A monitored node:
+[[input.measurements]]
+name               = "rVariable"
+dataType           = "number"
+tags               = {test = "16", var = "45"}
+nodeId             = "ns=4;s=MAIN.rVariable45"
+collectionType     = "monitored"
+monitorResolution  = 5      # ms
+deadbandAbsolute   = 0      # Absolute max difference for a value not to be collected
+deadbandRelative   = 0.0    # Relative max difference for a value not to be collected

@@ -1,17 +1,27 @@
 const EE = require("events").EventEmitter
 
 class DataBuffer extends EE {
-    constructor(count) {
-        super();
-        this.count = count;
-        this.q = [];
+    constructor(count, writeInterval = 2000) {
+        super()
+        this.count = count
+        this.q = []
+        this.reachedLimit = false
+        setInterval(() => {
+            if (this.reachedLimit) {
+                this.reachedLimit = false
+            } else if (this.q.length > 0)  {
+                this.emit('data', this.q)
+                this.q = []
+            }
+        }, writeInterval)
     }
 
     insert(data) {
         this.q.push(data)
         if (this.q.length == this.count) {
-            this.emit('data', this.q);
-            this.q = [];
+            this.reachedLimit = true
+            this.emit('data', this.q)
+            this.q = []
         }
     }
     
@@ -20,17 +30,3 @@ class DataBuffer extends EE {
     }
 }
 module.exports = DataBuffer
-
-/*
-const test = new DataBuffer(2);
-
-test.on('data', data => {
-    console.log(data);
-})
-
-test.insert("123")
-console.log('get', test.get())
-test.insert("123")
-test.insert("123")
-test.insert("123")
-*/

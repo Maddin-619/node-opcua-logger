@@ -7,7 +7,7 @@ let DataBuffer = require("./utils/dataBuffer");
 
 class WritePump {
 	constructor(config) {
-		this.buffer = new DataBuffer(config.writeMaxPoints)
+		this.buffer = new DataBuffer(config.writeMaxPoints || 10000 , config.writeInterval || 2000)
 		this.name = config.name;
 		this.config = config;
 		this.output = new influx.InfluxDB({
@@ -22,22 +22,16 @@ class WritePump {
 
 	Run() {
 
-		let writeLimit = this.config.writeMaxPoints || 1000;
-		let writeInterval = this.config.writeInterval || 5000;
-
-		console.log(this.name, ": starting writepump [ writeLimit: ", writeLimit, ", writeInterval:", writeInterval, "].")
+		console.log(this.name, ": starting writepump [ writeLimit: ", this.config.writeMaxPoints, ", writeInterval:", this.config.writeInterval, "].")
 
 		this.buffer.on('data', data => {
 			this.output.writePoints(data, {database : this.config.database})
-			.then(() => {
-				
-			})
 			.catch(err => {
 				if (err.toString().search("database not found") != -1) {
 					console.log('Create Database ' + self.config.database);
 					this.output.createDatabase(self.config.database);
 				} else {
-					console.log("Could not write to Database");
+					console.log(err);
 				}
 			})
 		})

@@ -353,15 +353,17 @@ ReadPump.prototype.Run = function(callback) {
                 async.parallel({
                         monitoring: function(parallel_callback) {
                             // install the subscription
-                            self.StartMonitoring(function(err) {
-                                console.log("Monitoring error:", err);
-                                if (!monitoringCallbackCalled) {
-                                    monitoringCallbackCalled = true;
-                                    parallel_callback("Monitoring error: " + err);
-                                } else {
-                                    console.log('WARNING: monitoring callback already called');
-                                }
-                            });
+                            if (self.monitoredMeasurements.length > 0 ) {
+                                self.StartMonitoring(function(err) {
+                                    console.log("Monitoring error:", err);
+                                    if (!monitoringCallbackCalled) {
+                                        monitoringCallbackCalled = true;
+                                        parallel_callback("Monitoring error: " + err);
+                                    } else {
+                                        console.log('WARNING: monitoring callback already called');
+                                    }
+                                });
+                            }
                         },
                         polling: function(parallel_callback) {
                             // start polling

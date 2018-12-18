@@ -28,8 +28,8 @@ class WritePump {
 			this.output.writePoints(data, {database : this.config.database})
 			.catch(err => {
 				if (err.toString().search("database not found") != -1) {
-					console.log('Create Database ' + self.config.database);
-					this.output.createDatabase(self.config.database);
+					console.log('Create Database ' + this.config.database);
+					this.output.createDatabase(this.config.database);
 				} else {
 					console.log(err);
 				}

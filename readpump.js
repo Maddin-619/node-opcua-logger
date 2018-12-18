@@ -15,6 +15,7 @@ function ReadPump(config, measurements, writepump) {
     this.monitoredMeasurements = [];
     this.writepump = writepump;
     this.poller;
+    this.shutdown = false;
 }
 
 ReadPump.prototype.ConnectOPCUA = function(callback) {
@@ -24,12 +25,6 @@ ReadPump.prototype.ConnectOPCUA = function(callback) {
 	{
 		endpoint_must_exist: false,
 		keepSessionAlive: true,
-		connectionStrategy:
-		{
-			maxRetry: 10,
-			initialDelay: 2000,
-			maxDelay: 10*1000
-		}
 	};
 
     this.uaClient = new opcua.OPCUAClient(options);
@@ -105,7 +100,7 @@ ReadPump.prototype.StartMonitoring = function(callback) {
         requestedLifetimeCount: 1000,
         requestedMaxKeepAliveCount: 300,
         publishingEnabled: true,
-        priority: 1
+        priority: 10
     });
     let sub = self.uaSubscription;
     sub.on("started", function() {
@@ -327,6 +322,16 @@ ReadPump.prototype.Run = function(callback) {
 
     self.InitializeMeasurements();
 
+    function handleShutdown(signal) {
+        self.shutdown = true
+        console.log('Received ', signal, 'Shutdown Readpump: ', self.uaServerUrl);
+        self.DisconnectOPCUA(function() {
+            callback('shutdown');
+        })
+    }
+    process.on('SIGINT', handleShutdown)
+    process.on('SIGTERM', handleShutdown)
+
     // declare 2 vars to avoid double callbacks
     let monitoringCallbackCalled = false;
     let pollingCallbackCalled = false;
@@ -341,8 +346,10 @@ ReadPump.prototype.Run = function(callback) {
             // In case of an error, close everything.
             function(waterfall_next) {
                 self.uaClient.on("close", function () {
-                    console.log("close and abort");
-                    if (!reconnectErrorCalled) {
+                    if (self.shutdown) {
+                        return
+                    }
+                    else if (!reconnectErrorCalled) {
                         reconnectErrorCalled = true;
                         // close disconnect client
                         self.monitoredMeasurements = [];
@@ -355,6 +362,9 @@ ReadPump.prototype.Run = function(callback) {
                             // install the subscription
                             if (self.monitoredMeasurements.length > 0 ) {
                                 self.StartMonitoring(function(err) {
+                                    if(self.shutdown) {
+                                        return
+                                    }
                                     console.log("Monitoring error:", err);
                                     if (!monitoringCallbackCalled) {
                                         monitoringCallbackCalled = true;
@@ -370,6 +380,9 @@ ReadPump.prototype.Run = function(callback) {
                             self.StartPolling(function(err) {
                                 if (self.poller) self.poller.cancel();
                                 self.poller = null;
+                                if(self.shutdown) {
+                                    return
+                                }
                                 console.log("Polling error:", err);
                                 if (!pollingCallbackCalled) {
                                     pollingCallbackCalled = true;

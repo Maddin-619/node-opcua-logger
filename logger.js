@@ -28,10 +28,14 @@ async.each(rps,
 		async.forever(
 			function(forever_next) {
 				rp.Run(function(err) {
-					console.log("An error occured in the Readpump:", err)
-					let wait = config.failoverTimeout || 5000;
-					console.log("Restarting readpump in", wait, "seconds.")
-					setTimeout(forever_next, wait)
+					if (err == 'shutdown') {
+						wp.Stop()
+					} else {
+						console.log("An error occured in the Readpump:", err)
+						let wait = config.failoverTimeout || 5000;
+						console.log("Restarting readpump in", wait, "seconds.")
+						setTimeout(forever_next, wait)
+					}
 				});
 			},
 			function(err) {

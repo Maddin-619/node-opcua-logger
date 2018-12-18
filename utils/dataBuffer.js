@@ -4,16 +4,24 @@ class DataBuffer extends EE {
     constructor(count, writeInterval = 2000) {
         super()
         this.count = count
+        this.writeInterval = writeInterval
         this.q = []
         this.reachedLimit = false
-        setInterval(() => {
+    }
+
+    startIntervalRead() {
+        this.interval = setInterval(() => {
             if (this.reachedLimit) {
                 this.reachedLimit = false
             } else if (this.q.length > 0)  {
                 this.emit('data', this.q)
                 this.q = []
             }
-        }, writeInterval)
+        }, this.writeInterval)
+    }
+
+    stopIntervalRead() {
+        clearInterval(this.interval)
     }
 
     insert(data) {

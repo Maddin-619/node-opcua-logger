@@ -1,6 +1,5 @@
 "use strict"
 
-let async = require("async");
 let influx = require("influx");
 
 let DataBuffer = require("./utils/dataBuffer");
@@ -10,6 +9,7 @@ class WritePump {
 		this.buffer = new DataBuffer(config.writeMaxPoints || 10000 , config.writeInterval || 2000)
 		this.name = config.name;
 		this.config = config;
+		this.shutdownOnce = false;
 		this.output = new influx.InfluxDB({
 			host :           config.host,
 			port :           config.port, // optional, default 8086
@@ -24,6 +24,8 @@ class WritePump {
 
 		console.log(this.name, ": starting writepump [ writeLimit: ", this.config.writeMaxPoints, ", writeInterval:", this.config.writeInterval, "].")
 
+		this.buffer.startIntervalRead()
+
 		this.buffer.on('data', data => {
 			this.output.writePoints(data, {database : this.config.database})
 			.catch(err => {
@@ -36,6 +38,15 @@ class WritePump {
 			})
 		})
 
+	}
+
+	Stop() {
+		if (!this.shutdownOnce) {
+			console.log('Shut down Writepump', this.name)
+			this.buffer.removeAllListeners()
+			this.buffer.stopIntervalRead()
+			this.shutdownOnce = true
+		}
 	}
 
 	AddPointsToBuffer(points){

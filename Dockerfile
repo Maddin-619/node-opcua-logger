@@ -10,4 +10,4 @@ RUN npm install
 
 COPY . /usr/src/app
 
-CMD ["npm", "start"]
+ENTRYPOINT exec node logger.js
